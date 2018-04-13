@@ -4,24 +4,29 @@
     var dropZone = document.getElementById('drop-zone');
     var uploadForm = document.getElementById('js-upload-form');
 
+    var enclosure = {
+      top: 40,
+      right: 520,
+      bottom: 380,
+      left: 65
+    }
+
     var constrainMovement = function(e) {
       var target = $(e.target)
-      if (target.position().left < 0) {
-        target.css({left: 0})
+      if (target.position().left > enclosure.left) {
+        target.css({left: enclosure.left})
         return false
       }
-      if (target.position().top < 0) {
-        target.css({top: 0})
+      if (target.position().top > enclosure.top) {
+        target.css({top: enclosure.top})
         return false
       }
-      // console.log(target.position().left)
-      // console.log(target.width())
-      // console.log($('.dragger').position().left)
-      // console.log($('.dragger').width())
-      // console.log("end")
-      console.log($('.dragger').position().left + target.width())
-      if ($('.dragger').position().left + $('.dragger').width() > $('#creator').position().left + $('#creator').width()) {
-        target.css({left: 0})
+      if (target.position().left + target.width() < enclosure.right) {
+        target.css({left: enclosure.right - target.width()})
+        return false
+      }
+      if (target.position().top + target.height() < enclosure.bottom) {
+        target.css({top: enclosure.bottom - target.height()})
         return false
       }
       return true
