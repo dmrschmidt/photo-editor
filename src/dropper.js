@@ -20,8 +20,15 @@
             return function(e) {
               document.getElementById('drop-content').innerHTML = ['<img class="" src="', e.target.result,
                                 '" title="', escape(theFile.name), '" id="dropped"/>'].join('');
-              $('.drag-container').draggable({handle: '.dragger', drag: function() {
+              $('.drag-container').draggable({handle: '.dragger',
+              start: function() {
+                $('.dragging-preview').addClass('dragging')
+              },
+              drag: function() {
                 // return false here to prevent further movement
+              },
+              stop: function() {
+                $('.dragging-preview').removeClass('dragging')
               }/*, containment: "#drop-target", scroll: false */});
               $('.drag-container').addClass('dragging')
             };

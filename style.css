@@ -68,8 +68,13 @@ body {
   background-size: cover;
 }
 
+.drag-container {
+  opacity: 0;
+}
+
 .drag-container.dragging {
   cursor: move;
+  opacity: 1;
 }
 
 a {
