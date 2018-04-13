@@ -6,27 +6,37 @@
 
     var enclosure = {
       top: 40,
-      right: 520,
-      bottom: 380,
-      left: 65
+      right: 513,
+      bottom: 373,
+      left: 68
+    }
+
+    var originalDimension = {
+      width: 640,
+      height: 640
+    }
+
+    var mappedLocation = function(current) {
+      var scale = $('.template-image').width() / originalDimension.width
+      return current * scale
     }
 
     var constrainMovement = function(e) {
       var target = $(e.target)
-      if (target.position().left > enclosure.left) {
-        target.css({left: enclosure.left})
+      if (target.position().left > mappedLocation(enclosure.left)) {
+        target.css({left: mappedLocation(enclosure.left)})
         return false
       }
-      if (target.position().top > enclosure.top) {
-        target.css({top: enclosure.top})
+      if (target.position().top > mappedLocation(enclosure.top)) {
+        target.css({top: mappedLocation(enclosure.top)})
         return false
       }
-      if (target.position().left + target.width() < enclosure.right) {
-        target.css({left: enclosure.right - target.width()})
+      if (target.position().left + target.width() < mappedLocation(enclosure.right)) {
+        target.css({left: mappedLocation(enclosure.right) - target.width()})
         return false
       }
-      if (target.position().top + target.height() < enclosure.bottom) {
-        target.css({top: enclosure.bottom - target.height()})
+      if (target.position().top + target.height() < mappedLocation(enclosure.bottom)) {
+        target.css({top: mappedLocation(enclosure.bottom) - target.height()})
         return false
       }
       return true
