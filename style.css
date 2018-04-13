@@ -1,0 +1,86 @@
+body {
+  background: white;
+  font-family: 'Raleway', sans-serif;
+  padding-top: 54px;
+}
+
+@media (min-width: 992px) {
+  body {
+    padding-top: 56px;
+  }
+}
+
+.logo {
+  height: 30px;
+}
+
+.image-container {
+  position: relative;
+}
+
+#creator {
+  height: 400px;
+  width: 100%;
+}
+
+#drop-target {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.dragger {
+  background-color: #232323;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
+#drop-frame {
+  /* pointer-events: none; */
+  position: absolute;
+  left: 0;
+  top: 0px;
+}
+
+a {
+  text-decoration: none;
+  margin-left: 20px;
+}
+
+a:hover {
+  color: #2D2D2D;
+  text-decoration: underline;
+}
+
+/* layout.css Style */
+.upload-drop-zone {
+  height: 200px;
+  border-width: 2px;
+  margin-bottom: 20px;
+}
+
+/* skin.css Style*/
+.upload-drop-zone {
+  color: #ccc;
+  border-style: dashed;
+  border-color: #ccc;
+  line-height: 200px;
+  text-align: center
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+
+.thumb {
+    height: 75px;
+    border: 1px solid #000;
+    margin: 10px 5px 0 0;
+  }
