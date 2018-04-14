@@ -4,40 +4,49 @@
     var dropZone = document.getElementById('drop-zone');
     var fileInput = document.getElementById('js-upload-files');
 
-    var startUpload = function(files) {
-        // Loop through the FileList and render image files as thumbnails.
-        for (var i = 0, f; f = files[i]; i++) {
-
-            // Only process image files.
-            if (!f.type.match('image.*')) {
-                continue;
+    var addImageToCanvas = function(image) {
+        var reader = new FileReader()
+        reader.onload = (function(theFile) {
+            return function(e) {
+                var imageElement = ['<img class="" src="', e.target.result,
+                '" title="', escape(theFile.name), '" id="dropped"/>'].join('')
+                document.getElementById('drop-content').innerHTML = imageElement
+                document.getElementById('dragging-preview').innerHTML = imageElement
+                $('.drag-container').addClass('draggable')
             }
-            
-            var reader = new FileReader();
+        })(image)
+        reader.readAsDataURL(image)
+    }
 
-            reader.onload = (function(theFile) {
-                return function(e) {
-                    var imageElement = ['<img class="" src="', e.target.result,
-                    '" title="', escape(theFile.name), '" id="dropped"/>'].join('')
-                    document.getElementById('drop-content').innerHTML = imageElement
-                    document.getElementById('dragging-preview').innerHTML = imageElement
-                    $('.drag-container').addClass('draggable')
-                }
-            })(f);
-
-            reader.readAsDataURL(f);
+    var readImageDimensions = function(image) {
+        var reader = new FileReader()
+        reader.onload = function() {
+            var img = new Image()
+            img.onload = function() {
+                document.uploadedImage = img
+            }
+            img.src = reader.result
         }
+        reader.readAsDataURL(image)
+    }
+
+    var setupCanvasWithImage = function(file) {
+        if (!file.type.match('image.*')) {
+            return
+        }
+        addImageToCanvas(file)
+        readImageDimensions(file)
     }
 
     fileInput.addEventListener('change', function(e) {
         e.preventDefault()
-        startUpload(e.target.files)
+        setupCanvasWithImage(e.target.files[0])
     })
 
     dropZone.ondrop = function(e) {
         e.preventDefault();
         this.className = 'upload-drop-zone';
-        startUpload(e.dataTransfer.files)
+        setupCanvasWithImage(e.dataTransfer.files[0])
     }
 
     dropZone.ondragover = function() {
