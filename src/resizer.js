@@ -43,19 +43,33 @@
 
     var handleMouseMove = function(e) {
         if (!document.isResizing) { return }
-        var movement = e.pageX - initialOffset.left
 
         var direction = dragTarget.attr('class').split(" ").filter(function(c) { return c.startsWith("ord-") })[0]
         switch (direction) {
             case "ord-w": {
                 console.log("direction west")
+                var movement = e.pageX - initialOffset.left
                 dragger.css({'left': initialPosition.left + movement})
                 dragger.css({'width': initialSize.width - movement})
                 break
             }
             case "ord-e": {
                 console.log("direction east")
+                var movement = e.pageX - initialOffset.left
                 dragger.css({'width': initialSize.width + movement})
+                break
+            }
+            case "ord-n": {
+                console.log("direction north")
+                var movement = e.pageY - initialOffset.top
+                dragger.css({'top': initialPosition.top + movement})
+                dragger.css({'height': initialSize.height - movement})
+                break
+            }
+            case "ord-s": {
+                console.log("direction south")
+                var movement = e.pageY - initialOffset.top
+                dragger.css({'height': initialSize.height + movement})
                 break
             }
             default:{
