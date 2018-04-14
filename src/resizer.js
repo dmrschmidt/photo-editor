@@ -15,10 +15,12 @@
     var initialOffset
     var initialSize
     var initialPosition
+    var dragTarget
 
     var handleBarMouseDown = function(e) {
         console.log('start resizing')
         document.isResizing = true
+        dragTarget = $(e.target)
         initialOffset = { left: e.pageX, top: e.pageY }
         initialSize = {
             width:  dragger.width(),
@@ -36,15 +38,31 @@
         initialOffset = undefined
         initialSize = undefined
         initialPosition = undefined
+        dragTarget = undefined
     }
 
     var handleMouseMove = function(e) {
         if (!document.isResizing) { return }
         var movement = e.pageX - initialOffset.left
-        console.log('resizing by ' + movement + ' to new width: ' + (dragger.width() - movement))
 
-        dragger.css({'left': initialPosition.left + movement})
-        dragger.css({'width': initialSize.width - movement})
+        var direction = dragTarget.attr('class').split(" ").filter(function(c) { return c.startsWith("ord-") })[0]
+        switch (direction) {
+            case "ord-w": {
+                console.log("direction west")
+                dragger.css({'left': initialPosition.left + movement})
+                dragger.css({'width': initialSize.width - movement})
+                break
+            }
+            case "ord-e": {
+                console.log("direction east")
+                dragger.css({'width': initialSize.width + movement})
+                break
+            }
+            default:{
+                console.log("other direction:" + direction + ":")
+                break
+            }
+        }
     }
 
     $('.jcrop-dragbar').on("mousedown touchstart", function(e) {
