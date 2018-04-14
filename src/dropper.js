@@ -2,7 +2,7 @@
     'use strict';
 
     var dropZone = document.getElementById('drop-zone');
-    var uploadForm = document.getElementById('js-upload-form');
+    var fileInput = document.getElementById('js-upload-files');
 
     var enclosure = {
       top: 40,
@@ -55,8 +55,10 @@
 
           reader.onload = (function(theFile) {
             return function(e) {
-              document.getElementById('drop-content').innerHTML = ['<img class="" src="', e.target.result,
-                                '" title="', escape(theFile.name), '" id="dropped"/>'].join('');
+              var imageElement = ['<img class="" src="', e.target.result,
+                                '" title="', escape(theFile.name), '" id="dropped"/>'].join('')
+              document.getElementById('drop-content').innerHTML = imageElement
+              document.getElementById('dragging-preview').innerHTML = imageElement
               $('.drag-container').draggable({handle: '.dragger',
               start: function() {
                 $('.dragging-preview').addClass('dragging')
@@ -75,7 +77,7 @@
         }
       }
 
-    uploadForm.addEventListener('submit', function(e) {
+    fileInput.addEventListener('change', function(e) {
         e.preventDefault()
         startUpload(e.target.files)
     })
