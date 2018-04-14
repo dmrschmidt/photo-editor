@@ -79,7 +79,7 @@
         }
     }
 
-    $('.jcrop-dragbar').on("mousedown touchstart", function(e) {
+    $('.jcrop-resizer').on("mousedown touchstart", function(e) {
         handleBarMouseDown(e)
     })
 
