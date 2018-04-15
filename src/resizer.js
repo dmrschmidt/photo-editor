@@ -52,38 +52,38 @@
 
         var ord = dragTarget.attr('class').split(" ").filter(function(c) { return c.startsWith("ord-") })[0]
         var direction = ord.split("-")[1]
-        if (/w/.test(direction)) {
-            console.log("direction west")
+
+        if (direction == "nw" || direction == "w") {
             dragger.css({'left': initialPosition.left + movementX})
             dragger.css({'width': initialSize.width - movementX})
 
-            // aspect resize
-            dragger.css({'top': initialPosition.top + (movementX / aspectRatio) / 2})
+            var divisor = direction == "w" ? 2 : 1
+            dragger.css({'top': initialPosition.top + (movementX / aspectRatio) / divisor})
             dragger.css({'height': initialSize.height - (movementX / aspectRatio)})
-        }
-        if (/e/.test(direction)) {
-            console.log("direction east")
+        } else if (direction == "ne" || direction == "e") {
             dragger.css({'width': initialSize.width + movementX})
 
-            // aspect increase to south
-            dragger.css({'top': initialPosition.top - (movementX / aspectRatio) / 2})
+            var divisor = direction == "e" ? 2 : 1
+            dragger.css({'top': initialPosition.top - (movementX / aspectRatio) / divisor})
             dragger.css({'height': initialSize.height + (movementX / aspectRatio)})
-        }
-        if (/n/.test(direction)) {
-            console.log("direction north")
+        } else if (direction == "se" || direction == "s") {
+            dragger.css({'height': initialSize.height + movementY})
+
+            var multiplier = direction == "s" ? 0.5 : 0
+            dragger.css({'left': initialPosition.left - (movementY * aspectRatio) * multiplier})
+            dragger.css({'width': initialSize.width + (movementY * aspectRatio)})
+        } else if (direction == "sw") {
+            dragger.css({'height': initialSize.height + movementY})
+
+            dragger.css({'left': initialPosition.left - (movementY * aspectRatio)})
+            dragger.css({'width': initialSize.width + (movementY * aspectRatio)})
+        } else if (direction == "n") {
             dragger.css({'top': initialPosition.top + movementY})
             dragger.css({'height': initialSize.height - movementY})
 
-            // aspect increase to north
+            // aspect resize horizontal
             dragger.css({'left': initialPosition.left + (movementY * aspectRatio) / 2})
             dragger.css({'width': initialSize.width - (movementY * aspectRatio)})
-        }
-        if (/s/.test(direction)) {
-            console.log("direction south " + direction + ", " + /s/.test(direction))
-            dragger.css({'height': initialSize.height + movementY})
-
-            dragger.css({'left': initialPosition.left - (movementY * aspectRatio) / 2})
-            dragger.css({'width': initialSize.width + (movementY * aspectRatio)})
         }
     }
 
