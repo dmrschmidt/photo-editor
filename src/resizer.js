@@ -53,38 +53,50 @@
         var ord = dragTarget.attr('class').split(" ").filter(function(c) { return c.startsWith("ord-") })[0]
         var direction = ord.split("-")[1]
 
+        var newPosition = {'left': initialPosition.left, 'top': initialPosition.top}
+        var newSize = {'width': initialSize.width, 'height': initialSize.height}
+
         if (direction == "nw" || direction == "w") {
-            dragger.css({'left': initialPosition.left + movementX})
-            dragger.css({'width': initialSize.width - movementX})
+            newPosition['left'] = initialPosition.left + movementX
+            newSize['width'] = initialSize.width - movementX
 
             var divisor = direction == "w" ? 2 : 1
-            dragger.css({'top': initialPosition.top + (movementX / aspectRatio) / divisor})
-            dragger.css({'height': initialSize.height - (movementX / aspectRatio)})
+            newPosition['top'] = initialPosition.top + (movementX / aspectRatio) / divisor
+            newSize['height'] = initialSize.height - (movementX / aspectRatio)
         } else if (direction == "ne" || direction == "e") {
-            dragger.css({'width': initialSize.width + movementX})
+            newSize['width'] = initialSize.width + movementX
 
             var divisor = direction == "e" ? 2 : 1
-            dragger.css({'top': initialPosition.top - (movementX / aspectRatio) / divisor})
-            dragger.css({'height': initialSize.height + (movementX / aspectRatio)})
+            newPosition['top'] = initialPosition.top - (movementX / aspectRatio) / divisor
+            newSize['height'] = initialSize.height + (movementX / aspectRatio)
         } else if (direction == "se" || direction == "s") {
-            dragger.css({'height': initialSize.height + movementY})
+            newSize['height'] = initialSize.height + movementY
 
             var multiplier = direction == "s" ? 0.5 : 0
-            dragger.css({'left': initialPosition.left - (movementY * aspectRatio) * multiplier})
-            dragger.css({'width': initialSize.width + (movementY * aspectRatio)})
+            newPosition['left'] = initialPosition.left - (movementY * aspectRatio) * multiplier
+            newSize['width'] = initialSize.width + (movementY * aspectRatio)
         } else if (direction == "sw") {
-            dragger.css({'height': initialSize.height + movementY})
+            newSize['height'] = initialSize.height + movementY
 
-            dragger.css({'left': initialPosition.left - (movementY * aspectRatio)})
-            dragger.css({'width': initialSize.width + (movementY * aspectRatio)})
+            newPosition['left'] = initialPosition.left - (movementY * aspectRatio)
+            newSize['width'] = initialSize.width + (movementY * aspectRatio)
         } else if (direction == "n") {
-            dragger.css({'top': initialPosition.top + movementY})
-            dragger.css({'height': initialSize.height - movementY})
+            newPosition['top'] = initialPosition.top + movementY
+            newSize['height'] = initialSize.height - movementY
 
             // aspect resize horizontal
-            dragger.css({'left': initialPosition.left + (movementY * aspectRatio) / 2})
-            dragger.css({'width': initialSize.width - (movementY * aspectRatio)})
+            newPosition['left'] = initialPosition.left + (movementY * aspectRatio) / 2
+            newSize['width'] = initialSize.width - (movementY * aspectRatio)
         }
+
+        // TODO: apply constrainMovement logic here; unify the code to apply
+        //       for both parts that need it
+        dragger.css({
+            'top': newPosition['top'],
+            'left': newPosition['left'],
+            'width': newSize['width'],
+            'height': newSize['height']
+        })
     }
 
     $('.jcrop-resizer').on("mousedown touchstart", function(e) {
