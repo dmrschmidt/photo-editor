@@ -14,6 +14,7 @@
     }
 
     var mappedLocation = function(current) {
+        // TODO: should this be with the original aspect ratio?
         var scale = $('.template-image').width() / originalDimension.width
         return current * scale
     }

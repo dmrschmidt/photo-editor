@@ -5,8 +5,33 @@
     var originalDimension = { width: 640, height: 640}
 
     var mappedLocation = function(current) {
+        // TODO: should this be with the original aspect ratio?
         var scale = $('.template-image').width() / originalDimension.width
         return current * scale
+    }
+
+    var constrainBounds = function(bounds) {
+        var constrainedBounds = { left: bounds.left, top: bounds.top,
+                                  width: bounds.width, height: bounds.height}
+        if (bounds.width < mappedLocation(enclosure.right - enclosure.left)) {
+            constrainedBounds.width = mappedLocation(enclosure.right - enclosure.left)
+        }
+        if (bounds.height < mappedLocation(enclosure.bottom - enclosure.top)) {
+            constrainedBounds.height = mappedLocation(enclosure.bottom - enclosure.top)
+        }
+        if (bounds.left > mappedLocation(enclosure.left)) {
+            constrainedBounds.left = mappedLocation(enclosure.left)
+        }
+        if (bounds.top > mappedLocation(enclosure.top)) {
+            constrainedBounds.top = mappedLocation(enclosure.top)
+        }
+        if (bounds.left + bounds.width < mappedLocation(enclosure.right)) {
+            constrainedBounds.left = mappedLocation(enclosure.right) - constrainedBounds.width
+        }
+        if (bounds.top + bounds.height < mappedLocation(enclosure.bottom)) {
+            constrainedBounds.top = mappedLocation(enclosure.bottom) - constrainedBounds.height
+        }
+        return constrainedBounds
     }
 
     document.isResizing = false
@@ -53,49 +78,49 @@
         var ord = dragTarget.attr('class').split(" ").filter(function(c) { return c.startsWith("ord-") })[0]
         var direction = ord.split("-")[1]
 
-        var newPosition = {'left': initialPosition.left, 'top': initialPosition.top}
-        var newSize = {'width': initialSize.width, 'height': initialSize.height}
+        var newBounds = { left: initialPosition.left, top: initialPosition.top,
+                          width: initialSize.width, height: initialSize.height}
 
         if (direction == "nw" || direction == "w") {
-            newPosition['left'] = initialPosition.left + movementX
-            newSize['width'] = initialSize.width - movementX
+            newBounds.left = initialPosition.left + movementX
+            newBounds.width = initialSize.width - movementX
 
             var divisor = direction == "w" ? 2 : 1
-            newPosition['top'] = initialPosition.top + (movementX / aspectRatio) / divisor
-            newSize['height'] = initialSize.height - (movementX / aspectRatio)
+            newBounds.top = initialPosition.top + (movementX / aspectRatio) / divisor
+            newBounds.height = initialSize.height - (movementX / aspectRatio)
         } else if (direction == "ne" || direction == "e") {
-            newSize['width'] = initialSize.width + movementX
+            newBounds.width = initialSize.width + movementX
 
             var divisor = direction == "e" ? 2 : 1
-            newPosition['top'] = initialPosition.top - (movementX / aspectRatio) / divisor
-            newSize['height'] = initialSize.height + (movementX / aspectRatio)
+            newBounds.top = initialPosition.top - (movementX / aspectRatio) / divisor
+            newBounds.height = initialSize.height + (movementX / aspectRatio)
         } else if (direction == "se" || direction == "s") {
-            newSize['height'] = initialSize.height + movementY
+            newBounds.height = initialSize.height + movementY
 
             var multiplier = direction == "s" ? 0.5 : 0
-            newPosition['left'] = initialPosition.left - (movementY * aspectRatio) * multiplier
-            newSize['width'] = initialSize.width + (movementY * aspectRatio)
+            newBounds.left = initialPosition.left - (movementY * aspectRatio) * multiplier
+            newBounds.width = initialSize.width + (movementY * aspectRatio)
         } else if (direction == "sw") {
-            newSize['height'] = initialSize.height + movementY
+            newBounds.height = initialSize.height + movementY
 
-            newPosition['left'] = initialPosition.left - (movementY * aspectRatio)
-            newSize['width'] = initialSize.width + (movementY * aspectRatio)
+            newBounds.left = initialPosition.left - (movementY * aspectRatio)
+            newBounds.width = initialSize.width + (movementY * aspectRatio)
         } else if (direction == "n") {
-            newPosition['top'] = initialPosition.top + movementY
-            newSize['height'] = initialSize.height - movementY
+            newBounds.top = initialPosition.top + movementY
+            newBounds.height = initialSize.height - movementY
 
             // aspect resize horizontal
-            newPosition['left'] = initialPosition.left + (movementY * aspectRatio) / 2
-            newSize['width'] = initialSize.width - (movementY * aspectRatio)
+            newBounds.left = initialPosition.left + (movementY * aspectRatio) / 2
+            newBounds.width = initialSize.width - (movementY * aspectRatio)
         }
 
-        // TODO: apply constrainMovement logic here; unify the code to apply
-        //       for both parts that need it
+        var constrainedBounds = constrainBounds(newBounds)
+
         dragger.css({
-            'top': newPosition['top'],
-            'left': newPosition['left'],
-            'width': newSize['width'],
-            'height': newSize['height']
+            'top': constrainedBounds.top,
+            'left': constrainedBounds.left,
+            'width': constrainedBounds.width,
+            'height': constrainedBounds.height
         })
     }
 
