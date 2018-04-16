@@ -11,32 +11,37 @@
     }
 
     var constrainBounds = function(bounds) {
-        var constrainedBounds = { left: bounds.left, top: bounds.top,
-                                  width: bounds.width, height: bounds.height}
-        if (bounds.width < mappedLocation(enclosure.right - enclosure.left)) {
-            constrainedBounds.width = mappedLocation(enclosure.right - enclosure.left)
+        var constrainedBounds = {
+            left: bounds.left,
+            top: bounds.top,
+            width: bounds.width,
+            height: bounds.height
         }
-        if (bounds.height < mappedLocation(enclosure.bottom - enclosure.top)) {
-            constrainedBounds.height = mappedLocation(enclosure.bottom - enclosure.top)
+        var mappedEnclosure = {
+            left: mappedLocation(enclosure.left),
+            top: mappedLocation(enclosure.top),
+            right: mappedLocation(enclosure.right),
+            bottom: mappedLocation(enclosure.bottom)
         }
-        if (bounds.left > mappedLocation(enclosure.left)) {
-            constrainedBounds.left = mappedLocation(enclosure.left)
+
+        if (bounds.left > mappedEnclosure.left) {
+            return false
         }
-        if (bounds.top > mappedLocation(enclosure.top)) {
-            constrainedBounds.top = mappedLocation(enclosure.top)
+        if (bounds.top > mappedEnclosure.top) {
+            return false
         }
-        if (bounds.left + bounds.width < mappedLocation(enclosure.right)) {
-            constrainedBounds.left = mappedLocation(enclosure.right) - constrainedBounds.width
+        if (bounds.left + bounds.width < mappedEnclosure.right) {
+            return false
         }
-        if (bounds.top + bounds.height < mappedLocation(enclosure.bottom)) {
-            constrainedBounds.top = mappedLocation(enclosure.bottom) - constrainedBounds.height
+        if (bounds.top + bounds.height < mappedEnclosure.bottom) {
+            return false
         }
-        return constrainedBounds
+        return true
     }
 
     document.isResizing = false
 
-    var dragger = $('.dragger')
+    var dragContainer = $('.drag-container')
     var initialOffset
     var initialSize
     var initialPosition
@@ -48,12 +53,12 @@
         dragTarget = $(e.target)
         initialOffset = { left: e.pageX, top: e.pageY }
         initialSize = {
-            width:  dragger.width(),
-            height: dragger.height()
+            width:  dragContainer.width(),
+            height: dragContainer.height()
         }
         initialPosition = {
-            left: dragger.position().left,
-            top: dragger.position().top
+            left: dragContainer.position().left,
+            top: dragContainer.position().top
         }
     }
 
@@ -114,13 +119,13 @@
             newBounds.width = initialSize.width - (movementY * aspectRatio)
         }
 
-        var constrainedBounds = constrainBounds(newBounds)
+        if (!constrainBounds(newBounds)) { return }
 
-        dragger.css({
-            'top': constrainedBounds.top,
-            'left': constrainedBounds.left,
-            'width': constrainedBounds.width,
-            'height': constrainedBounds.height
+        dragContainer.css({
+            'top': newBounds.top,
+            'left': newBounds.left,
+            'width': newBounds.width,
+            'height': newBounds.height
         })
     }
 
