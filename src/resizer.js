@@ -129,16 +129,20 @@
         })
     }
 
-    $('.jcrop-resizer').on("mousedown touchstart", function(e) {
-        handleBarMouseDown(e)
-    })
+    $(document).ready(function() {
+        dragContainer = $('.drag-container')
 
-    $(document).on("mouseup touchend", function(e) {
-        handleBarMouseUp(e)
-    })
+        $('.jcrop-resizer').on("mousedown touchstart", function(e) {
+            handleBarMouseDown(e)
+        })
 
-    $(document).on("mousemove touchmove", function(e) {
-        handleMouseMove(e)
+        $(document).on("mouseup touchend", function(e) {
+            handleBarMouseUp(e)
+        })
+
+        $(document).on("mousemove touchmove", function(e) {
+            handleMouseMove(e)
+        })
     })
 
 }(jQuery)

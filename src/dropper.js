@@ -1,8 +1,8 @@
 + function($) {
     'use strict';
 
-    var dropZone = document.getElementById('drop-zone');
-    var fileInput = document.getElementById('js-upload-files');
+    var dropZone
+    var fileInput
 
     var addImageToCanvas = function(image) {
         var reader = new FileReader()
@@ -24,6 +24,7 @@
             var img = new Image()
             img.onload = function() {
                 document.uploadedImage = img
+                document.createDraggable()
             }
             img.src = reader.result
         }
@@ -38,25 +39,30 @@
         readImageDimensions(file)
     }
 
-    fileInput.addEventListener('change', function(e) {
-        e.preventDefault()
-        setupCanvasWithImage(e.target.files[0])
+    $(document).ready(function() {
+        dropZone = document.getElementById('drop-zone')
+        fileInput = document.getElementById('js-upload-files')
+
+        fileInput.addEventListener('change', function(e) {
+            e.preventDefault()
+            setupCanvasWithImage(e.target.files[0])
+        })
+
+        dropZone.ondrop = function(e) {
+            e.preventDefault();
+            this.className = 'upload-drop-zone';
+            setupCanvasWithImage(e.dataTransfer.files[0])
+        }
+
+        dropZone.ondragover = function() {
+            this.className = 'upload-drop-zone drop';
+            return false;
+        }
+
+        dropZone.ondragleave = function() {
+            this.className = 'upload-drop-zone';
+            return false;
+        }
     })
-
-    dropZone.ondrop = function(e) {
-        e.preventDefault();
-        this.className = 'upload-drop-zone';
-        setupCanvasWithImage(e.dataTransfer.files[0])
-    }
-
-    dropZone.ondragover = function() {
-        this.className = 'upload-drop-zone drop';
-        return false;
-    }
-
-    dropZone.ondragleave = function() {
-        this.className = 'upload-drop-zone';
-        return false;
-    }
 
 }(jQuery);
