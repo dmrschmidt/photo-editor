@@ -40,17 +40,34 @@
         return true
     }
 
-    $('.drag-container').draggable({
-        handle: '.dragger',
-        start: function() {
-            $('.dragging-preview').addClass('dragging')
-        },
-        drag: function(e) {
-            return !document.isResizing && constrainMovement(e)
-        },
-        stop: function() {
-            $('.dragging-preview').removeClass('dragging')
-        }
+    var createDraggable = function() {
+        let pole = $('.drag-container')
+        console.log($('.drag-container').innerWidth())
+        let containment = [
+            $('#drop-target').offset().left + mappedLocation(enclosure.right) - $('#drop-content').outerWidth(),
+            $('#drop-target').offset().top + mappedLocation(enclosure.bottom) - $('#drop-content').outerHeight(),
+            $('#drop-target').offset().left + mappedLocation(enclosure.left),
+            $('#drop-target').offset().top + mappedLocation(enclosure.top)
+        ]
+
+        $('.drag-container').draggable({
+            handle: '.dragger',
+            start: function() {
+                $('.dragging-preview').addClass('dragging')
+            },
+            drag: function() {
+                console.log(($('.drag-container').position().left) + " " + (enclosure.left - pole.outerWidth() / 2))
+                return !document.isResizing
+            },
+            containment: containment,
+            stop: function() {
+                $('.dragging-preview').removeClass('dragging')
+            }
+        })
+    }
+
+    $(document).ready(function() {
+        document.createDraggable = createDraggable
     })
 
 }(jQuery)
