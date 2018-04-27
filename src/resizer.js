@@ -70,7 +70,11 @@
         initialPosition = undefined
         dragTarget = undefined
 
+        // console.log('width was: ' + document.originalWidth)
+        // document.originalWidth = $('.drag-container').width()
+        document.originalRatio = $('.drop-frame').width() / $('.drag-container').width()
         document.createDraggable()
+        // console.log('width is: ' + document.originalWidth)
     }
 
     var handleMouseMove = function(e) {
@@ -144,6 +148,19 @@
 
         $(document).on("mousemove touchmove", function(e) {
             handleMouseMove(e)
+        })
+
+        $(window).on('resize', function () {
+            let ratio = $('#creator').outerWidth() / originalDimension.width
+            $('#creator').css({
+                'height': originalDimension.height * ratio
+            })
+            dragContainer.css({
+                'top': ratio * document.originalPosition.top,
+                'left': ratio * document.originalPosition.left,
+                'width': $('.drop-frame').width() / document.originalRatio,
+                // 'height': $('.drag-frame').height() * document.originalRatio
+            })
         })
     })
 

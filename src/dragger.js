@@ -41,14 +41,18 @@
     }
 
     var createDraggable = function() {
-        let pole = $('.drag-container')
-        console.log($('.drag-container').innerWidth())
         let containment = [
             $('#drop-target').offset().left + mappedLocation(enclosure.right) - $('#drop-content').outerWidth(),
             $('#drop-target').offset().top + mappedLocation(enclosure.bottom) - $('#drop-content').outerHeight(),
             $('#drop-target').offset().left + mappedLocation(enclosure.left),
             $('#drop-target').offset().top + mappedLocation(enclosure.top)
         ]
+
+        document.originalRatio = $('.drop-frame').width() / $('.drag-container').width()
+        document.originalPosition = $('.drag-container').position()
+        $('#creator').css({
+            'height': originalDimension.height * ($('#creator').outerWidth() / originalDimension.width)
+        })
 
         $('.drag-container').draggable({
             handle: '.dragger',
@@ -61,6 +65,7 @@
             },
             stop: function() {
                 $('.dragging-preview').removeClass('dragging')
+                document.originalPosition = $('.drag-container').position()
             }
         })
     }
