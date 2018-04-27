@@ -52,14 +52,13 @@
 
         $('.drag-container').draggable({
             handle: '.dragger',
+            containment: containment,
             start: function() {
                 $('.dragging-preview').addClass('dragging')
             },
             drag: function() {
-                console.log(($('.drag-container').position().left) + " " + (enclosure.left - pole.outerWidth() / 2))
                 return !document.isResizing
             },
-            containment: containment,
             stop: function() {
                 $('.dragging-preview').removeClass('dragging')
             }

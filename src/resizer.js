@@ -69,6 +69,8 @@
         initialSize = undefined
         initialPosition = undefined
         dragTarget = undefined
+
+        document.createDraggable()
     }
 
     var handleMouseMove = function(e) {
