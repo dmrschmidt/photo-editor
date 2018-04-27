@@ -40,7 +40,7 @@
     }
 
     $(document).ready(function() {
-        dropZone = document.getElementById('drop-zone')
+        dropZone = document.getElementById('creator')
         fileInput = document.getElementById('js-upload-files')
 
         fileInput.addEventListener('change', function(e) {
@@ -50,17 +50,17 @@
 
         dropZone.ondrop = function(e) {
             e.preventDefault();
-            this.className = 'upload-drop-zone';
+            // this.className = 'upload-drop-zone';
             setupCanvasWithImage(e.dataTransfer.files[0])
         }
 
         dropZone.ondragover = function() {
-            this.className = 'upload-drop-zone drop';
+            // this.className = 'upload-drop-zone drop';
             return false;
         }
 
         dropZone.ondragleave = function() {
-            this.className = 'upload-drop-zone';
+            // this.className = 'upload-drop-zone';
             return false;
         }
     })
