@@ -6,5 +6,5 @@ group :testing do
   gem 'rspec'
 
   # explicitly bypass sec vulnerability in 1.7.2
-  gem 'nokogiri', '~> 1.8.1'
+  gem 'nokogiri', '~> 1.10.4'
 end
