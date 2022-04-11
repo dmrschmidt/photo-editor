@@ -19,15 +19,17 @@ GEM
       rake
     jasmine-core (3.1.0)
     mini_mime (1.0.0)
-    mini_portile2 (2.4.0)
-    nokogiri (1.10.8)
-      mini_portile2 (~> 2.4.0)
+    mini_portile2 (2.8.0)
+    nokogiri (1.13.4)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     phantomjs (2.1.1.0)
     poltergeist (1.17.0)
       capybara (~> 2.1)
       cliver (~> 0.3.1)
       websocket-driver (>= 0.2.0)
     public_suffix (3.0.2)
+    racc (1.6.0)
     rack (2.0.8)
     rack-test (1.0.0)
       rack (>= 1.0, < 3)
@@ -56,7 +58,7 @@ PLATFORMS
 
 DEPENDENCIES
   jasmine
-  nokogiri (~> 1.10.8)
+  nokogiri (~> 1.13.4)
   poltergeist
   rspec
 
